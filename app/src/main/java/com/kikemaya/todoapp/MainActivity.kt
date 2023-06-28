@@ -4,6 +4,7 @@ import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore.Audio.Radio
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
@@ -11,8 +12,12 @@ import android.widget.RadioGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
+
+    val db = Firebase.firestore
 
     private val categories = listOf(
         TaskCategory.Business,
@@ -67,6 +72,19 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.todo_dialog_category_personal) -> TaskCategory.Personal
                     else -> TaskCategory.Other
                 }
+
+                val postData = hashMapOf(
+                    "task" to currentTask,
+                )
+
+                db.collection("tasks")
+                    .add(postData)
+                    .addOnSuccessListener { documentReference ->
+                        Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("TAG", "Error adding document", e)
+                    }
 
                 tasks.add(Task(currentTask, currentCategory))
                 updateTasks()

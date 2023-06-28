@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "330154962966",
+    "project_id": "todofirestore-cf95f",
+    "storage_bucket": "todofirestore-cf95f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330154962966:android:3a0972bb700d02bf6f0537",
+        "android_client_info": {
+          "package_name": "com.kikemaya.todoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330154962966-rolu3eq3773gele938fs8l54397pe201.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtDD_w5vx4Y2CrxwR0oZCyZaACbhEJ89M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330154962966-rolu3eq3773gele938fs8l54397pe201.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
