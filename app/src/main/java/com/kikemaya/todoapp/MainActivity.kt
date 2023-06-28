@@ -17,7 +17,7 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-    val db = Firebase.firestore
+    private val db = Firebase.firestore
 
     private val categories = listOf(
         TaskCategory.Business,
@@ -25,11 +25,7 @@ class MainActivity : AppCompatActivity() {
         TaskCategory.Other
     )
 
-    private val tasks = mutableListOf(
-        Task("Business Test", TaskCategory.Business),
-        Task("Personal Test", TaskCategory.Personal),
-        Task("Other Test", TaskCategory.Other)
-    )
+    private val tasks = mutableListOf<Task>()
 
     //REFERENCE TO THE CATEGORIES RV
     private lateinit var rvCategories: RecyclerView
@@ -47,6 +43,27 @@ class MainActivity : AppCompatActivity() {
         initComponent()
         initUI()
         initListeners()
+        getTasksCollection()
+    }
+
+    private fun getTasksCollection() {
+        db.collection("tasks")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val taskCategory = when (document.data["task"]?.toString()) {
+                        "Business" -> TaskCategory.Business
+                        "Personal" -> TaskCategory.Personal
+                        else -> TaskCategory.Other
+                    }
+
+                    tasks.add(Task("${document.data["task"]?.toString()}", taskCategory))
+                }
+                updateTasks()
+            }
+            .addOnFailureListener { exception ->
+                Log.w("TAG", "Error getting documents.", exception)
+            }
     }
 
     private fun initListeners() {
@@ -67,6 +84,7 @@ class MainActivity : AppCompatActivity() {
             if (currentTask.isNotEmpty()) {
                 val selectedId = rgCategories.checkedRadioButtonId
                 val selectedRadioButton: RadioButton = rgCategories.findViewById(selectedId)
+
                 val currentCategory: TaskCategory = when (selectedRadioButton.text) {
                     getString(R.string.todo_dialog_category_business) -> TaskCategory.Business
                     getString(R.string.todo_dialog_category_personal) -> TaskCategory.Personal
@@ -75,6 +93,7 @@ class MainActivity : AppCompatActivity() {
 
                 val postData = hashMapOf(
                     "task" to currentTask,
+                    "category" to currentCategory.toString()
                 )
 
                 db.collection("tasks")
@@ -125,9 +144,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateTasks() {
+        //FILTER BY CATEGORIES
         val selectedCategories: List<TaskCategory> = categories.filter { it.isSelected }
         val newTasks = tasks.filter { selectedCategories.contains(it.category) }
         tasksAdapter.tasks = newTasks
+
         tasksAdapter.notifyDataSetChanged()
     }
 }
