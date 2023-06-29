@@ -1,14 +1,14 @@
 package com.kikemaya.todoapp
 
 import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore.Audio.Radio
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -68,6 +68,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListeners() {
         favAddTask.setOnClickListener { showDialog() }
+
+
     }
 
     private fun showDialog() {
@@ -123,8 +125,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initUI() {
         categoriesAdapter = CategoriesAdapter(categories) { position -> updateCategories(position) }
-        rvCategories.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rvCategories.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvCategories.adapter = categoriesAdapter
 
         tasksAdapter = TasksAdapter(tasks) { position -> onItemSelected(position) }

@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.view.View
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 class TasksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val tvTask: TextView = view.findViewById(R.id.tvTask)
     private val cbTask: CheckBox = view.findViewById(R.id.cbTask)
+    val deleteIcon: ImageView = view.findViewById(R.id.deleteIcon)
 
     fun render(task: Task) {
         if (task.isSelected) {
